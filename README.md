@@ -1,5 +1,7 @@
 # Transparent Background 4K
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+
 一个面向 Codex 的图片抠图 Skill：把白色、近白色、浅灰色或扫描纸张背景变成透明背景，同时保留文字、Logo、细线、颜色和抗锯齿边缘，可选安全放大到 4K。适合制作 PPT 素材、科研插图、透明 Logo 和网页图片资产。
 
 它使用确定性图像处理，而不是生成式抠图：不重画品牌图形，不改写文字，也不凭空生成细节。
