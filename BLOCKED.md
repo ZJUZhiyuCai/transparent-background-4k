@@ -8,8 +8,9 @@
    使用符合项目要求的 `/opt/homebrew/bin/python3`（Python 3.14.4，
    Pillow 12.2.0、numpy 2.4.6）复跑得到 `Ran 59 tests in 0.655s`、`OK`。
 2. `gh auth status` 显示账号 `ZJUZhiyuCai` 的默认令牌无效，与任务单记录的
-   “已登录”不一致。Git SSH 推送此前可用；CI 查询与 `gh run watch` 仍需重新认证，
-   或改用只读 GitHub 接口取得等价证据。
+   “已登录”不一致。提权后的 `gh run` 查询实际可用，但 HTTPS Git 凭据缺少
+   `workflow` scope，新增 workflow 时被远端拒绝。显式使用现有 SSH 地址推送成功，
+   全程未修改 remote 或 git config。
 
 以上均为本机环境偏差，未发现仓库代码回归；不修改依赖或判卷文件。
 
@@ -22,5 +23,7 @@
   `cp1252` stdout 抛出 `UnicodeEncodeError`。
 - CI 处理：在 workflow 设置 `PYTHONUTF8=1` 后重试，验证项目在 UTF-8
   Windows 环境的承诺。
+- 复验：run `30282941072` 四组合全部成功；Windows 3.12 日志为
+  `Ran 59 tests in 1.110s`、`OK`。
 - 待裁决：脚本是否应主动配置 UTF-8 或安全降级输出。任务边界禁止修改
   `scripts/`，因此本次不修实现，只保留风险说明。

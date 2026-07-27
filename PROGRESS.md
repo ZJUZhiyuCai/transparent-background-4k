@@ -7,4 +7,5 @@
 - 任务 1：完成；已添加标准 MIT LICENSE 与中文 README License 徽章。
 - 决策：CI action 使用官方当前 v6；比旧范例的 v4/v5 更符合 2026 托管 runner。
 - 任务 2：第 1 次 CI 为 Ubuntu 全绿、Windows 因 cp1252 中文输出失败。
-- 当前：workflow 启用 `PYTHONUTF8=1` 后进行第 2 次 CI 验证。
+- 任务 2：完成；run 30282941072 四组合全绿，日志含 `Ran 59 tests`。
+- 当前：开始任务 3（可复现演示原图、透明输出与双预览）。
