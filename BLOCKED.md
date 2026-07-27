@@ -13,3 +13,14 @@
 
 以上均为本机环境偏差，未发现仓库代码回归；不修改依赖或判卷文件。
 
+## 2026-07-27：默认 Windows 控制台编码会使中文路径 CLI 测试失败
+
+- CI run `30282780510`：Ubuntu × Python 3.10/3.12 通过；Windows 两项均失败。
+- 两个 Windows job 都运行了 59 项测试，唯一失败为
+  `test_cli_subprocess_handles_spaces_and_unicode_paths`。
+- 根因：`scripts/make_transparent_4k.py` 输出中文路径时，Windows runner 的
+  `cp1252` stdout 抛出 `UnicodeEncodeError`。
+- CI 处理：在 workflow 设置 `PYTHONUTF8=1` 后重试，验证项目在 UTF-8
+  Windows 环境的承诺。
+- 待裁决：脚本是否应主动配置 UTF-8 或安全降级输出。任务边界禁止修改
+  `scripts/`，因此本次不修实现，只保留风险说明。

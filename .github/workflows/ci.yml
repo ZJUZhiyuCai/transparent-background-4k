@@ -7,6 +7,9 @@ on:
 permissions:
   contents: read
 
+env:
+  PYTHONUTF8: "1"
+
 jobs:
   test:
     name: ${{ matrix.os }} / Python ${{ matrix.python-version }}
@@ -37,4 +40,3 @@ jobs:
 
       - name: Run tests
         run: python -B -m unittest discover -s tests
-
