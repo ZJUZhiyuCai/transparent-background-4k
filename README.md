@@ -1,6 +1,8 @@
 # Transparent Background 4K
 
+[![CI](https://github.com/ZJUZhiyuCai/transparent-background-4k/actions/workflows/ci.yml/badge.svg)](https://github.com/ZJUZhiyuCai/transparent-background-4k/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![Python 3.10+](https://img.shields.io/badge/Python-3.10%2B-3776AB.svg?logo=python&logoColor=white)](https://www.python.org/downloads/)
 
 一个面向 Codex 的图片抠图 Skill：把白色、近白色、浅灰色或扫描纸张背景变成透明背景，同时保留文字、Logo、细线、颜色和抗锯齿边缘，可选安全放大到 4K。适合制作 PPT 素材、科研插图、透明 Logo 和网页图片资产。
 
@@ -212,6 +214,9 @@ python3 scripts/batch_make_transparent_4k.py "INPUT_DIR" \
 - 输出路径为符号链接时会被拒绝；最终文件均为原子写入，避免产生半成品。
 
 ## 测试与验证
+
+GitHub Actions 会在每次 push 和 pull request 上运行
+Ubuntu/Windows × Python 3.10/3.12 四组合测试矩阵。
 
 ```bash
 python3 -B -m unittest discover -s tests
