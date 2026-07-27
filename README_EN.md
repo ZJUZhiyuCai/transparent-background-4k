@@ -25,6 +25,9 @@ black text, thin lines, and antialiased edges.
 | --- | --- |
 | ![Synthetic white-background logo-style input](examples/demo_source.png) | ![Transparent checkerboard preview](examples/demo_source_transparent_preview_checker.png) |
 
+Chinese promotional poster:
+[view or download `promo_cn.png`](assets/promo/promo_cn.png).
+
 ## Contents
 
 - [Preview](#preview)
@@ -322,6 +325,7 @@ The current version contains 59 passing tests covering:
 transparent-background-4k/
 ├── .github/workflows/
 │   └── ci.yml            # Ubuntu/Windows × Python 3.10/3.12
+├── assets/promo/          # Chinese poster and reproducible generator
 ├── examples/             # Reproducible source, transparent output, previews
 ├── LICENSE
 ├── README.md
@@ -335,4 +339,3 @@ transparent-background-4k/
 │   └── batch_make_transparent_4k.py  # Batch CLI
 └── tests/                # Unit tests
 ```
-

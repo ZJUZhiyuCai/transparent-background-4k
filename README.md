@@ -19,6 +19,8 @@
 | --- | --- |
 | ![白底 Logo 风格演示原图](examples/demo_source.png) | ![透明背景棋盘格预览](examples/demo_source_transparent_preview_checker.png) |
 
+中文宣传长图：[查看或下载 `promo_cn.png`](assets/promo/promo_cn.png)。
+
 ## 目录
 
 - [效果预览](#效果预览)
@@ -253,6 +255,7 @@ python3 -B -m unittest discover -s tests
 transparent-background-4k/
 ├── .github/workflows/
 │   └── ci.yml            # Ubuntu/Windows × Python 3.10/3.12
+├── assets/promo/          # 中文宣传长图与可复现生成脚本
 ├── examples/             # 可复现演示原图、透明输出与预览
 ├── LICENSE
 ├── README.md
