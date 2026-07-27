@@ -1,0 +1,4 @@
+interface:
+  display_name: "Transparent Background 4K"
+  short_description: "Remove backgrounds, safely enhance, and export images"
+  default_prompt: "Use $transparent-background-4k to remove the plain background without redrawing the source, preserve alpha and fine labels, safely enhance only when enlargement needs it, and choose PNG, lossless WebP, LZW TIFF, or an explicitly matte-backed JPEG."
