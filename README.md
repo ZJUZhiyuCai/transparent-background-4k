@@ -4,6 +4,8 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Python 3.10+](https://img.shields.io/badge/Python-3.10%2B-3776AB.svg?logo=python&logoColor=white)](https://www.python.org/downloads/)
 
+简体中文 | [English](README_EN.md)
+
 一个面向 Codex 的图片抠图 Skill：把白色、近白色、浅灰色或扫描纸张背景变成透明背景，同时保留文字、Logo、细线、颜色和抗锯齿边缘，可选安全放大到 4K。适合制作 PPT 素材、科研插图、透明 Logo 和网页图片资产。
 
 它使用确定性图像处理，而不是生成式抠图：不重画品牌图形，不改写文字，也不凭空生成细节。
@@ -249,8 +251,13 @@ python3 -B -m unittest discover -s tests
 
 ```text
 transparent-background-4k/
-├── SKILL.md              # Codex 使用的工作流、参数与守则
+├── .github/workflows/
+│   └── ci.yml            # Ubuntu/Windows × Python 3.10/3.12
+├── examples/             # 可复现演示原图、透明输出与预览
+├── LICENSE
 ├── README.md
+├── README_EN.md
+├── SKILL.md              # Codex 使用的工作流、参数与守则
 ├── requirements.txt
 ├── agents/
 │   └── openai.yaml       # Skill 界面元数据
