@@ -28,6 +28,7 @@ CYAN = "#20B8CD"
 CORAL = "#EC5B76"
 YELLOW = "#F6C344"
 GREEN = "#12A67D"
+VIOLET = "#6C5CE7"
 
 
 def load_font(size: int) -> ImageFont.FreeTypeFont:
@@ -46,6 +47,32 @@ def fit_image(path: Path, size: tuple[int, int]) -> Image.Image:
             size,
             method=Image.Resampling.LANCZOS,
         )
+
+
+def contain_rgba(path: Path, box: tuple[int, int]) -> Image.Image:
+    """Load an image with alpha and shrink it to fit inside the box."""
+    with Image.open(path) as source:
+        image = source.convert("RGBA")
+    image.thumbnail(box, Image.Resampling.LANCZOS)
+    return image
+
+
+def draw_checkerboard(
+    draw: ImageDraw.ImageDraw,
+    box: tuple[int, int, int, int],
+    tile: int = 22,
+) -> None:
+    """Fill a rectangle with the classic transparency checkerboard."""
+    left, top, right, bottom = box
+    draw.rectangle(box, fill="#FFFFFF")
+    for row, y in enumerate(range(top, bottom, tile)):
+        for col, x in enumerate(range(left, right, tile)):
+            if (row + col) % 2 == 0:
+                continue
+            draw.rectangle(
+                (x, y, min(x + tile, right), min(y + tile, bottom)),
+                fill="#E2E6EB",
+            )
 
 
 def wrapped_lines(
@@ -152,12 +179,11 @@ def main() -> None:
         "url": load_font(27),
     }
 
-    source_path = ROOT / "examples" / "demo_source.png"
-    checker_path = (
-        ROOT / "examples" / "demo_source_transparent_preview_checker.png"
+    source_path = Path(__file__).with_name("promo_art_source.png")
+    transparent_path = Path(__file__).with_name(
+        "promo_art_source_transparent.png"
     )
-    dark_path = ROOT / "examples" / "demo_source_transparent_preview_dark.png"
-    for required in (source_path, checker_path, dark_path):
+    for required in (source_path, transparent_path):
         if not required.is_file():
             raise FileNotFoundError(f"Required demo asset is missing: {required}")
 
@@ -203,62 +229,83 @@ def main() -> None:
     draw.rectangle((430, 826, 740, 842), fill=CORAL)
     draw.rectangle((740, 826, 1000, 842), fill=YELLOW)
 
-    # Before and after
+    # Transparency proof: same PNG on checkerboard and colored boards
     draw.rectangle((0, 900, WIDTH, 2420), fill=WHITE)
     draw.text(
-        (80, 1020),
-        "前后对比，效果先说话",
+        (80, 1010),
+        "放上彩色底，透明一眼可见",
         font=fonts["section"],
         fill=INK,
     )
     draw.text(
-        (80, 1100),
-        "同一张自制示例图，直接由仓库 CLI 处理。",
+        (80, 1095),
+        "同一张自制图形，由仓库 CLI 真实处理，非贴图示意。",
         font=fonts["body"],
         fill=MUTED,
     )
-    draw.text((80, 1190), "原始白底", font=fonts["caption"], fill=INK)
-    draw.text(
-        (560, 1190),
-        "透明背景 · 棋盘格预览",
-        font=fonts["caption"],
-        fill=INK,
-    )
 
-    source = fit_image(source_path, (440, 264))
-    checker = fit_image(checker_path, (440, 264))
-    draw.rounded_rectangle((70, 1235, 530, 1519), radius=8, fill=PAPER)
-    draw.rounded_rectangle((550, 1235, 1010, 1519), radius=8, fill=PAPER)
-    canvas.paste(source, (80, 1245))
-    canvas.paste(checker, (560, 1245))
-    draw.text(
-        (80, 1565),
-        "白色、近白色与浅灰背景",
-        font=fonts["caption"],
-        fill=MUTED,
+    art_before = contain_rgba(source_path, (420, 315))
+    art_alpha = contain_rgba(transparent_path, (420, 315))
+
+    draw.rounded_rectangle(
+        (80, 1180, 525, 1530), radius=10, fill=PAPER, outline=LINE, width=2
     )
+    canvas.paste(
+        art_before,
+        (80 + (445 - art_before.width) // 2, 1180 + (350 - art_before.height) // 2),
+        art_before,
+    )
+    draw_checkerboard(draw, (555, 1180, 1000, 1530))
+    draw.rounded_rectangle(
+        (555, 1180, 1000, 1530), radius=10, outline=LINE, width=2
+    )
+    canvas.paste(
+        art_alpha,
+        (555 + (445 - art_alpha.width) // 2, 1180 + (350 - art_alpha.height) // 2),
+        art_alpha,
+    )
+    draw.text((80, 1560), "处理前 · 白底 PNG", font=fonts["caption"], fill=MUTED)
     draw.text(
-        (560, 1565),
-        "文字、细线、颜色与边缘保留",
+        (555, 1560),
+        "处理后 · 透明 PNG（棋盘格示透明）",
         font=fonts["caption"],
         fill=MUTED,
     )
 
     draw.text(
         (80, 1680),
-        "深色背景验边缘",
-        font=fonts["section"],
+        "同一张透明 PNG，横跨三种底色",
+        font=fonts["cap_title"],
         fill=INK,
     )
+    strip = (80, 1770, 1000, 2210)
+    panel_width = (strip[2] - strip[0]) // 3
+    # Panel hues deliberately avoid the artwork palette so every peak stays visible.
+    for index, color in enumerate(("#38BDF8", "#F97316", INK)):
+        draw.rectangle(
+            (
+                strip[0] + index * panel_width,
+                strip[1],
+                strip[0] + (index + 1) * panel_width if index < 2 else strip[2],
+                strip[3],
+            ),
+            fill=color,
+        )
+    art_strip = contain_rgba(transparent_path, (860, 400))
+    canvas.paste(
+        art_strip,
+        (
+            strip[0] + (strip[2] - strip[0] - art_strip.width) // 2,
+            strip[1] + (strip[3] - strip[1] - art_strip.height) // 2,
+        ),
+        art_strip,
+    )
     draw.text(
-        (80, 1760),
-        "用于检查白边、色边和半透明像素，不把预览当最终文件。",
+        (80, 2250),
+        "没有白边、没有底色残留：PPT、海报、深色页面直接贴。",
         font=fonts["body"],
         fill=MUTED,
     )
-    dark_preview = fit_image(dark_path, (840, 504))
-    draw.rounded_rectangle((110, 1835, 970, 2359), radius=8, fill=DEEP)
-    canvas.paste(dark_preview, (120, 1845))
 
     # Capabilities
     draw.rectangle((0, 2420, WIDTH, 3570), fill=PAPER)
