@@ -12,12 +12,12 @@
 
 ## 效果预览
 
-下图由仓库内的 Pillow 脚本合成，不使用网络素材。透明结果保留了彩色图形、
-黑色文字、细线和抗锯齿边缘。
+下图由仓库内的 Pillow 脚本合成，不使用网络素材。左图是山脉图案的白底输入，
+右图是同一输出 PNG 放到棋盘格上的预览，用来直观看到背景确实被移除。
 
-| 原始白底 | 透明背景（棋盘格预览） |
+| 原始白底山脉图案 | 透明背景（棋盘格预览） |
 | --- | --- |
-| ![白底 Logo 风格演示原图](examples/demo_source.png) | ![透明背景棋盘格预览](examples/demo_source_transparent_preview_checker.png) |
+| ![白底山脉图案](assets/promo/promo_art_source.png) | ![山脉图案透明背景棋盘格预览](assets/promo/promo_art_source_transparent_preview_checker.png) |
 
 中文宣传长图：[查看或下载 `promo_cn.png`](assets/promo/promo_cn.png)。
 

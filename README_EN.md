@@ -17,13 +17,14 @@ it does not redraw brand marks, rewrite text, or invent detail.
 
 ## Preview
 
-The source below is synthesized by the Pillow script in this repository and
-uses no downloaded media. The transparent result preserves the colored shapes,
-black text, thin lines, and antialiased edges.
+The artwork below is synthesized by the Pillow script in this repository and
+uses no downloaded media. The left image is the white-background input; the
+right image previews the same output PNG on a checkerboard so the removed
+background is immediately visible.
 
-| White-background input | Transparent output (checkerboard preview) |
+| White-background mountain artwork | Transparent output (checkerboard preview) |
 | --- | --- |
-| ![Synthetic white-background logo-style input](examples/demo_source.png) | ![Transparent checkerboard preview](examples/demo_source_transparent_preview_checker.png) |
+| ![White-background mountain artwork](assets/promo/promo_art_source.png) | ![Mountain artwork transparent checkerboard preview](assets/promo/promo_art_source_transparent_preview_checker.png) |
 
 Chinese promotional poster:
 [view or download `promo_cn.png`](assets/promo/promo_cn.png).

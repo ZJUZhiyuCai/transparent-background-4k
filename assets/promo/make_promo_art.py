@@ -1,9 +1,11 @@
 #!/usr/bin/env python3
-"""Generate the text-free promotional artwork and its real transparent output.
+"""Generate the text-free promotional artwork and its transparent previews.
 
 The artwork is a deterministic flat-style mountain scene drawn with Pillow on a
 pure white background. The transparent version is produced by the repository's
-own CLI so the poster always shows a genuine processing result.
+own CLI so the poster always shows a genuine processing result. A checkerboard
+composite is also written for README previews, while the RGBA file remains the
+actual output.
 """
 
 import subprocess
@@ -15,6 +17,9 @@ from PIL import Image, ImageDraw
 ROOT = Path(__file__).resolve().parents[2]
 ART_SOURCE = Path(__file__).with_name("promo_art_source.png")
 ART_TRANSPARENT = Path(__file__).with_name("promo_art_source_transparent.png")
+ART_PREVIEW = Path(__file__).with_name(
+    "promo_art_source_transparent_preview_checker.png"
+)
 
 # Final canvas and supersampling factor for smooth antialiased edges.
 SIZE = (1440, 1080)
@@ -91,6 +96,22 @@ def draw_mark() -> Image.Image:
     return canvas.resize(SIZE, Image.Resampling.LANCZOS)
 
 
+def make_checker_preview(image: Image.Image) -> Image.Image:
+    """Composite the transparent result on a deterministic checkerboard."""
+    rgba = image.convert("RGBA")
+    background = Image.new("RGBA", rgba.size, (255, 255, 255, 255))
+    draw = ImageDraw.Draw(background)
+    tile = 48
+    for row, y in enumerate(range(0, rgba.height, tile)):
+        for col, x in enumerate(range(0, rgba.width, tile)):
+            if (row + col) % 2:
+                draw.rectangle(
+                    (x, y, min(x + tile, rgba.width), min(y + tile, rgba.height)),
+                    fill=(226, 230, 235, 255),
+                )
+    return Image.alpha_composite(background, rgba).convert("RGB")
+
+
 def main() -> int:
     art = draw_mark().convert("RGB")
     art.save(ART_SOURCE, format="PNG")
@@ -119,7 +140,11 @@ def main() -> int:
     if not ART_TRANSPARENT.exists():
         print("expected transparent output missing", file=sys.stderr)
         return 1
+    with Image.open(ART_TRANSPARENT) as transparent:
+        preview = make_checker_preview(transparent)
+    preview.save(ART_PREVIEW, format="PNG", optimize=True)
     print(f"transparent: {ART_TRANSPARENT}")
+    print(f"checker preview: {ART_PREVIEW}")
     return 0
 
 
